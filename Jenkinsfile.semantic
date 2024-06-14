@@ -57,8 +57,8 @@ pipeline {
                     // Build multi-platform Docker image
                     sh """
                         docker buildx build --platform linux/amd64,linux/arm64 \
-                        -t vamsidharp/static-site-test:${releaseTag} \
-                        -t vamsidharp/static-site-test:latest \
+                        -t vamsidharp/flywaydb:${releaseTag} \
+                        -t vamsidharp/flywaydb:latest \
                         --push .
                     """
                 }
