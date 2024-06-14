@@ -1,3 +1,5 @@
+def releaseTag
+
 pipeline {
     agent any
 
@@ -46,8 +48,8 @@ pipeline {
         stage('Build Multi-platform Docker Image') {
             steps {
                 script {
-                    def buildNumber = env.BUILD_NUMBER
-                    echo "Build number is ${buildNumber}"
+                    releaseTag = sh(returnStdout: true, script: 'git describe --tags --abbrev=0').trim()
+                    echo "Release tag is ${releaseTag}"
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                         sh "echo \$DOCKERHUB_PASSWORD | docker login -u \$DOCKERHUB_USERNAME --password-stdin"
                     }
@@ -55,7 +57,7 @@ pipeline {
                     // Build multi-platform Docker image
                     sh """
                         docker buildx build --platform linux/amd64,linux/arm64 \
-                        -t vamsidharp/static-site-test:${buildNumber} \
+                        -t vamsidharp/static-site-test:${releaseTag} \
                         -t vamsidharp/static-site-test:latest \
                         --push .
                     """
