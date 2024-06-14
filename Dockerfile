@@ -1,7 +1,9 @@
-FROM flyway/flyway:latest-alpine
+FROM flyway/flyway:10
 
-COPY ./flyway/sql /flyway/sql
+RUN mkdir -p /flyway/sql /flyway/conf
 
-COPY ./flyway/conf /flyway/conf
+# Copy your Flyway configuration file (e.g., flyway.conf) into the image
+COPY flyway.conf /flyway/conf/
 
-WORKDIR /flyway
+# Copy your SQL migration scripts into the image
+COPY ./migrations/* /flyway/sql
