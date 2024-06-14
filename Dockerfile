@@ -1,3 +1,7 @@
-FROM flyway/flyway:10
-COPY ./flyway/ /flyway/
-# CMD ["flyway","migrate"]
+FROM flyway/flyway:latest-alpine
+
+COPY ./flyway/sql /flyway/sql
+
+COPY ./flyway/conf /flyway/conf
+
+WORKDIR /flyway
